@@ -1,16 +1,36 @@
-# Semáforo com Arduino
+// Semáforo — versão 2 (carros + pedestres)
+const int VERMELHO = 12;
+const int AMARELO  = 11;
+const int VERDE    = 10;
 
-Projeto de semáforo para carros e pedestres, simulado no Tinkercad com Arduino Uno.
+const int PED_VERMELHO = 9;
+const int PED_VERDE    = 8;
 
-## Circuito
-- Carros: LED vermelho (pino 12), amarelo (11) e verde (10)
-- Pedestres: LED vermelho (pino 9) e verde (8)
-- Cada LED com resistor de 220 Ω ligado ao GND
+void setup() {
+  pinMode(VERMELHO, OUTPUT);
+  pinMode(AMARELO, OUTPUT);
+  pinMode(VERDE, OUTPUT);
+  pinMode(PED_VERMELHO, OUTPUT);
+  pinMode(PED_VERDE, OUTPUT);
+}
 
-Ciclo: verde 4 s → amarelo 2 s → vermelho 5 s.
+void loop() {
+  // Fase verde: carros seguem, pedestres esperam
+  digitalWrite(VERDE, HIGH);
+  digitalWrite(PED_VERMELHO, HIGH);
+  delay(4000);
+  digitalWrite(VERDE, LOW);
 
-**Link do circuito no Tinkercad:** (cole aqui o link)
+  // Fase amarela: carros se preparam para parar
+  digitalWrite(AMARELO, HIGH);
+  delay(2000);
+  digitalWrite(AMARELO, LOW);
 
-![Captura do circuito](circuito.png)
-
-## Uso na escola
+  // Fase vermelha: carros param, pedestres atravessam
+  digitalWrite(VERMELHO, HIGH);
+  digitalWrite(PED_VERMELHO, LOW);
+  digitalWrite(PED_VERDE, HIGH);
+  delay(5000);
+  digitalWrite(PED_VERDE, LOW);
+  digitalWrite(VERMELHO, LOW);
+}
